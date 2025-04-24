@@ -1,0 +1,1 @@
+export 'package:nolatech_aevg_app/config/environments/environments.dart';
