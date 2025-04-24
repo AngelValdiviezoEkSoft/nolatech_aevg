@@ -1,0 +1,1 @@
+export 'package:nolatech_aevg_app/config/routes/app_routes.dart';
