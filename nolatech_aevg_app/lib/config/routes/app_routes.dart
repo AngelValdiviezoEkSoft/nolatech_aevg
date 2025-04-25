@@ -13,7 +13,7 @@ final GoRouter appRouter = GoRouter(
       path: objRutas.rutaDefault,
       builder: (context, state) => BlocBuilder<AuthBloc, AuthState>(
         builder: (context, state) {
-          return AuthScreen(null);
+          return const AuthScreen();
         },
       ),
     ),
@@ -31,7 +31,7 @@ final GoRouter appRouter = GoRouter(
                 if(snapshot.data != '') {
                   
                     if(snapshot.data == 'log') {
-                      return AuthScreen(null);
+                      return const AuthScreen();
                     }
                     if(snapshot.data == 'home') {
                       return const HomeScreen(null);
