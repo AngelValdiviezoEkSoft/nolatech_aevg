@@ -16,11 +16,13 @@ class WelcomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
 
     final size = MediaQuery.of(context).size;
+    double fem = MediaQuery.of(context).size.width / 417;
 
     return Scaffold(
       body: Stack(
         children: [
           Container(
+            
             decoration: const BoxDecoration(
               image: DecorationImage(
                 image: AssetImage('assets/images/tennis_bg.png'),
@@ -39,19 +41,37 @@ class WelcomeScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
 
-                Padding(
-                  padding: const EdgeInsets.only(top: 40.0),
-                  child: Container(
-                    width: size.width * 0.99,
-                    height: size.height * 0.2,
-                    decoration: const BoxDecoration(
-                      image: DecorationImage(
-                        image: AssetImage('assets/images/logo_tennis_court.png'),
-                        fit: BoxFit.fitHeight,
-                      ),
+                Container(
+                  width: size.width * 0.99,
+                  height: size.height * 0.2,
+                  padding: const EdgeInsets.fromLTRB(83, 90, 83, 574),
+                  decoration: const BoxDecoration(
+                    image: DecorationImage(
+                      image: AssetImage('assets/images/logo_tennis_court.png'),
+                      fit: BoxFit.fitHeight,
                     ),
                   ),
                 ),
+/*
+                Container(
+                  //padding: const EdgeInsets.fromLTRB(32, 635, 32, 124),
+                  child: ElevatedButton(
+                        onPressed: () {
+                          // Navegar a login
+                          context.push(RoutesDesc().rutaDefault);
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.green[600],
+                          minimumSize: Size(250, 50),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                        child: Text('Iniciar sesión'),
+                      ),
+                      
+                ),
+*/
 
                 Padding(
                   padding: const EdgeInsets.only(bottom: 50.0),
@@ -69,12 +89,12 @@ class WelcomeScreen extends StatelessWidget {
                             borderRadius: BorderRadius.circular(10),
                           ),
                         ),
-                        child: Text('Iniciar sesión'),
+                        child: const Text('Iniciar sesión', style: TextStyle(color: Colors.white),),
                       ),
                       SizedBox(height: 15),
                       ElevatedButton(
                         onPressed: () {
-                          // Navegar a registro
+                          context.push(RoutesDesc().rutaRegistro);
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.white.withOpacity(0.3),
@@ -88,7 +108,9 @@ class WelcomeScreen extends StatelessWidget {
                       ),
                     ],
                   ),
+                  
                 )
+                
               ],
             ),
           ),

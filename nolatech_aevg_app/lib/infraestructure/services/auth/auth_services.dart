@@ -229,11 +229,13 @@ class AuthService extends ChangeNotifier {
     final data = json.decode(objLogin);
 
     lstOp = [
+      /*
       OpcionesMenuModel(
         descMenu: 'Editar Perfil', 
         icono: Icons.person_pin, 
         onPress: () => context.push(RoutesDesc().rutaEditarPerfil),
       ),
+      */
       OpcionesMenuModel(
         descMenu: 'Soporte', 
         icono: Icons.question_mark,

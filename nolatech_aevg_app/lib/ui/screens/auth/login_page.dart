@@ -31,7 +31,6 @@ class _LoginFormScreenState extends State<AuthScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
     body: ListView(
-      padding: const EdgeInsets.all(20),
       children: [
         
         Stack(
@@ -49,9 +48,14 @@ class _LoginFormScreenState extends State<AuthScreen> {
               Positioned(
                 top: 40,
                 left: 16,
-                child: CircleAvatar(
-                  backgroundColor: Colors.greenAccent,
-                  child: Icon(Icons.arrow_back, color: Colors.white),
+                child: GestureDetector(
+                  onTap: () {
+                    context.pop();
+                  },
+                  child: CircleAvatar(
+                    backgroundColor: Colors.greenAccent,
+                    child: Icon(Icons.arrow_back, color: Colors.white),
+                  ),
                 ),
               ),
             ],
@@ -59,6 +63,10 @@ class _LoginFormScreenState extends State<AuthScreen> {
 
         const SizedBox(height: 10),
 
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 16),          
+          child: Column(children: [
+            
         const Text(
           'Iniciar sesión',
           style: TextStyle(
@@ -133,7 +141,9 @@ class _LoginFormScreenState extends State<AuthScreen> {
           SizedBox(
             width: double.infinity,
             child: ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                context.push(RoutesDesc().rutaPrincipal);
+              },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.greenAccent[400],
                 padding: const EdgeInsets.symmetric(vertical: 14),
@@ -156,7 +166,7 @@ class _LoginFormScreenState extends State<AuthScreen> {
               const Text("¿Aún no tienes cuenta? "),
               GestureDetector(
                 onTap: () {
-                  // Navegar a registro
+                  context.push(RoutesDesc().rutaRegistro);
                 },
                 child: const Text(
                   "Regístrate",
@@ -168,6 +178,10 @@ class _LoginFormScreenState extends State<AuthScreen> {
               )
             ],
           ),
+        
+          ],)
+        ),
+
         ],
       ),
     );
@@ -178,10 +192,10 @@ class BottomCurveClipper extends CustomClipper<Path> {
   @override
   Path getClip(Size size) {
     final path = Path();
-    path.lineTo(0, size.height - 150); // Baja hasta casi el final
+    path.lineTo(0, size.height - 270); // Baja hasta casi el final
     path.quadraticBezierTo(
-      size.width / 2, size.height, // Punto de control para la curva
-      size.width, size.height - 150, // Punto final de la curva
+      size.width / 5, size.height, // Punto de control para la curva
+      size.width, size.height - 100, // Punto final de la curva
     );
     path.lineTo(size.width, 0); // Sube al tope derecho
     path.close(); // Cierra el camino

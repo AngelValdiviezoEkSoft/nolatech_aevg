@@ -8,7 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 final objRutas = RoutesDesc();
 
 final GoRouter appRouter = GoRouter(
-  routes: [//
+  routes: [//  
     GoRoute(
       path: objRutas.rutaDefault,
       builder: (context, state) => BlocBuilder<AuthBloc, AuthState>(
@@ -45,12 +45,20 @@ final GoRouter appRouter = GoRouter(
         },
       ),
     ),
-    /*
     GoRoute(
-      path: objRutas.rutaAgenda,
-      builder: (context, state) => const AgendaScreen(null),      
+      path: objRutas.rutaFrmReservation,
+      builder: (context, state) => const FrmReservationScreen(),      
     ),
-    */
+    GoRoute(
+      path: objRutas.rutaRegistro,
+      builder: (context, state) => const FrmRecordScreen(),      
+    ),
+
+    GoRoute(
+      path: objRutas.rutaPrincipal,
+      builder: (context, state) => const PrincipalScreen(null),      
+    ),
+    
     /*
     GoRoute(
       path: objRutas.rutaEditarPerfil,

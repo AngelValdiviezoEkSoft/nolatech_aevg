@@ -35,6 +35,9 @@ class ItemsListasWidget extends StatelessWidget {
   final IconData icon;
   @required final String? texto;
   @required final String? texto2;
+  @required final String? texto3;
+  @required final String? texto4;
+  @required final String? texto5;
   final Color color1;
   final Color color2;
   @required final VoidCallback? onPress;
@@ -58,6 +61,9 @@ class ItemsListasWidget extends StatelessWidget {
       this.icon = Icons.circle,
       this.texto,
       this.texto2,
+      this.texto3,
+      this.texto4,
+      this.texto5,
       this.color1 = Colors.grey,
       this.color2 = Colors.blueGrey,
       this.onPress,
@@ -90,6 +96,9 @@ class ItemsListasWidget extends StatelessWidget {
         onPress2: onPress,
         texto: texto,
         texto2: texto2,
+        texto3: texto3,
+        texto4: texto4,
+        texto5: texto5,
         esRelevante: varEsRelevante,
         varContadorNotificacionLst: varContadorNotificacion,
         varMuestraNotificacionesTrApLst: varMuestraNotificacionesTrAp,
@@ -119,6 +128,9 @@ class ListaNotificaciones extends StatelessWidget {
   final IconData icon;
   @required final String? texto;
   @required final String? texto2;
+  @required final String? texto3;
+  @required final String? texto4;
+  @required final String? texto5;
   Color color1;
   final Color color2;
   @required final VoidCallback? onPress2;
@@ -143,6 +155,9 @@ class ListaNotificaciones extends StatelessWidget {
     this.icon = Icons.circle,
     this.texto,
     this.texto2,
+    this.texto3,
+    this.texto4,
+    this.texto5,
     this.color1 = Colors.grey,
     this.color2 = Colors.blueGrey,
     this.onPress2,
@@ -228,71 +243,103 @@ class ListaNotificaciones extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        
-                        if(texto2 == null || texto2!.isEmpty)
-                        Container(
-                          width: sizeLstNot.width * 0.5,
-                          height: sizeLstNot.height * 0.04,
-                          color: Colors.transparent,
-                          alignment: Alignment.center,
-                          child: Column(
-                            //mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
+                        //SizedBox(width: sizeLstNot.width * 0.025,),
+
+                         GestureDetector(
+                          onTap: () {
+                            //context.push(rutaNavegacionFin!);
+                          },
+                          child: Stack(
+                            alignment: Alignment.center,
                             children: [
+                              // El círculo de fondo
                               Container(
-                                color: Colors.transparent, 
-                                width: sizeLstNot.width * 0.55, 
-                                child: AutoSizeText( 
-                                  texto!, 
-                                  style: const TextStyle( color: Colors.black, fontWeight: FontWeight.bold ), 
-                                  presetFontSizes: const [18,16,14,12], maxLines: 2,)),
+                                width: sizeLstNot.width * 0.15,  // Tamaño del círculo (ajusta según sea necesario)
+                                height: sizeLstNot.height * 0.1,
+                                /*
+                                decoration: const BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: Color.fromARGB(255, 224, 232, 235),  // Color de fondo
+                                ),
+                                */
+                                color: Colors.transparent,
+                                child: Image.asset('assets/images/court_epicbox.png',
+                                  width: 60, height: 40, fit: BoxFit.cover),
+                              ),
+                              // El icono central (usamos un icono de grupo de personas)
+                              /*
+                              Icon(
+                                icon, // Icono similar al de personas
+                                size: 30,  // Tamaño del icono
+                                color: Colors.blue[900],  // Color del icono
+                              ),
+                              */
                             ],
                           ),
+                          
                         ),
+
+                        SizedBox(width: sizeLstNot.width * 0.035,),
           
-                        if(texto2 != null && texto2!.isNotEmpty )
+                        //if(texto2 != null && texto2!.isNotEmpty )
                         Container(
-                          width: sizeLstNot.width * 0.72,
+                          width: sizeLstNot.width * 0.7,
                           height: sizeLstNot.height * 0.11,
                           color: Colors.transparent,
                           alignment: Alignment.centerLeft,
                           child: Column(
                             //mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Container(color: Colors.transparent, width: sizeLstNot.width * 0.55, height: sizeLstNot.height * 0.05,child: AutoSizeText( texto!, style: const TextStyle( color: Colors.black, fontWeight: FontWeight.bold ), presetFontSizes: const [18,16,14,12], maxLines: 2,)),
+                              Container(color: Colors.transparent, width: sizeLstNot.width * 0.55, height: sizeLstNot.height * 0.035,child: AutoSizeText( texto!, style: const TextStyle( color: Colors.black, fontWeight: FontWeight.bold ), presetFontSizes: const [18,16,14,12], maxLines: 2,)),
                               
-                              Container(color: Colors.transparent, width: sizeLstNot.width * 0.55, height: sizeLstNot.height * 0.05,child: AutoSizeText( texto2!, style: const TextStyle( color: Colors.black,   ), presetFontSizes: const [14,12,10,8], maxLines: 2,)),
+                              Container(
+                                color: Colors.transparent, 
+                                width: sizeLstNot.width * 0.55, 
+                                height: sizeLstNot.height * 0.025,
+                                child: Row(
+                                  children: [
+                                    Container(
+                                      width: sizeLstNot.width * 0.05,
+                                      height: sizeLstNot.height * 0.05,
+                                      color: Colors.transparent,
+                                      child: const Icon(Icons.calendar_month, size: 15,)
+                                    ),
+                                    AutoSizeText( 
+                                        texto2!, 
+                                        style: const TextStyle( color: Colors.black,   ), 
+                                        presetFontSizes: const [14,12,10,8], maxLines: 1,
+                                      ),
+                                  ],
+                                )
+                              ),
+                              
+                              Container(color: Colors.transparent, width: sizeLstNot.width * 0.55, height: sizeLstNot.height * 0.025,child: AutoSizeText( texto3!, style: const TextStyle( color: Colors.black,   ), presetFontSizes: const [14,12,10,8], maxLines: 2,)),
+
+                              Container(
+                                color: Colors.transparent, 
+                                width: sizeLstNot.width * 0.55, 
+                                height: sizeLstNot.height * 0.025,
+                                child: Row(
+                                  children: [
+                                    Container(
+                                      width: sizeLstNot.width * 0.05,
+                                      height: sizeLstNot.height * 0.05,
+                                      color: Colors.transparent,
+                                      child: const Icon(Icons.timer_outlined, size: 15,)
+                                    ),
+                                    AutoSizeText( 
+                                        '$texto4 | $texto5',
+                                        style: const TextStyle( color: Colors.black,   ), 
+                                        presetFontSizes: const [14,12,10,8], maxLines: 1,
+                                      ),
+                                  ],
+                                )
+                              ),
                             ],
                           ),
                         ),
-          
-                        if(texto2 != null && texto2!.isNotEmpty )
-                        GestureDetector(
-                          onTap: () {
-                            context.push(rutaNavegacionFin!);
-                          },
-                          child: Stack(
-              alignment: Alignment.center,
-              children: [
-                // El círculo de fondo
-                Container(
-                  width: sizeLstNot.width * 0.15,  // Tamaño del círculo (ajusta según sea necesario)
-                  height: sizeLstNot.height * 0.1,
-                  decoration: const BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Color.fromARGB(255, 224, 232, 235),  // Color de fondo
-                  ),
-                ),
-                // El icono central (usamos un icono de grupo de personas)
-                Icon(
-                  icon, // Icono similar al de personas
-                  size: 30,  // Tamaño del icono
-                  color: Colors.blue[900],  // Color del icono
-                ),
-              ],
-            ),
-                          
-                        ),
-          
+          /*
                         if(texto2 == null || texto2!.isEmpty)
                         GestureDetector(
                           onTap: () {    
@@ -312,7 +359,7 @@ class ListaNotificaciones extends StatelessWidget {
                             )
                           ),
                         ),
-                                   
+                                   */
                       ],
                     ),                
                   ),

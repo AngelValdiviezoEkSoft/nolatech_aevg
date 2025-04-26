@@ -248,7 +248,7 @@ class HomeScreenState extends State<HomeScreen> {
                             //final jsonLog = json.decode(rspLogin);
 
                             //ignore: use_build_context_synchronously
-                            context.push(RoutesDesc().rutaPerfil);
+                            //context.push(RoutesDesc().rutaPerfil);
                           },
                           child: const Padding(
                             padding: EdgeInsets.all(8.0),

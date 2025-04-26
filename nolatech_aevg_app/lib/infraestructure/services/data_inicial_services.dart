@@ -112,49 +112,14 @@ class DataInicialService extends ChangeNotifier{
 
 
       final items = <ItemBoton>[
+        /*
         ItemBoton('','','',1, Icons.group_add, 'Prospectos', 'Seguimiento y control de prospectos','','', Colors.white, Colors.white,false,false,'','','icCompras.png','icComprasTrans.png','',
           RoutesDesc().rutaListaProspectos, 
           () {
             
           }
         ),
-        
-        ItemBoton('','','',2, Icons.groups, 'Clientes', 'Listado de todos los clientes asignados','','', Colors.white, Colors.white,false,false,'','','icTramApr.png','icTramAprTrans.png','',
-          RoutesDesc().rutaListaClientes, 
-          () {
-            
-          }
-        ),
-        
-        ItemBoton('','','',3, Icons.calendar_month, 'Visitas Agendadas', 'Listado de clientes programados para el día','','', Colors.white, Colors.white,false,false,'','','icTramProc.png','icTramProcTrans.png','',
-          RoutesDesc().rutaConstruccion, 
-          () {}
-        ),
-        
-        ItemBoton('','','',4, Icons.auto_stories_sharp, 'Catálogo', 'Catálogo de productos con imágenes','','', Colors.white, Colors.white,false,false,'','','icCompras.png','icComprasTrans.png','',
-          RoutesDesc().rutaConstruccion, 
-          () {}
-        ),
-        
-        ItemBoton('','','',5, Icons.dashboard_customize_outlined, 'Inventario', 'Inventario general de productos con stock','','', Colors.white, Colors.white,false,false,'','','icTramApr.png','icTramAprTrans.png','',
-          RoutesDesc().rutaConstruccion, 
-          () {}
-        ),
-        
-        ItemBoton('','','',6, Icons.format_list_bulleted_add, 'Listas de precio', 'Lista de precios generales para ventas','','', Colors.white, Colors.white,false,false,'','','icTramProc.png','icTramProcTrans.png','',
-          RoutesDesc().rutaConstruccion, 
-          () {}
-        ),
-        
-        ItemBoton('','','',7, Icons.percent, 'Promociones Vigentes', 'Listado de Promociones Vigentes','','', Colors.white, Colors.white,false,false,'','','icCompras.png','icComprasTrans.png','',
-          RoutesDesc().rutaConstruccion, 
-          () {}
-        ),
-        
-        ItemBoton('','','',8, Icons.inventory_rounded, 'Distribución en Rutas', 'Permite realizar el control de vehículos para reparto de ruta','','', Colors.white, Colors.white,false,false,'','','icCompras.png','icComprasTrans.png','',
-          RoutesDesc().rutaConstruccion, 
-          () {}
-        ),
+        */
       ]; 
 /*
       var rspCli = await ClienteService().getClientes();

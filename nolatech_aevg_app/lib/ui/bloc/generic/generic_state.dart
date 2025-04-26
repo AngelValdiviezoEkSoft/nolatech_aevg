@@ -66,6 +66,7 @@ class GenericState extends Equatable {
   Future<String> readPrincipalPage() async {
 
     try{
+      /*
       final registraProspecto = await storage.read(key: 'registraProspecto') ?? '';
       final registraActividad = await storage.read(key: 'RegistraActividad') ?? '';
       
@@ -107,18 +108,101 @@ class GenericState extends Equatable {
         }
       });
 
-      String respCmbLst = '';
+      //String respCmbLst = '';
+*/
+      final items = <ItemBoton>[
+        
+        ItemBoton('','','',1, Icons.group_add, 'Epic Box', '6 de julio 2024','Reservado por: Andrea Gómez','2 horas', Colors.white, Colors.white,false,false,'\$5','','icCompras.png','icComprasTrans.png','',
+          '', 
+          () {
+            
+          }
+        ),
+        
+        ItemBoton('','','',2, Icons.groups, 'Epic Box', '8 de agosto 2024','Reservado por: Angel Valdiviezo','5 horas', Colors.white, Colors.white,false,false,'\$84','','icTramApr.png','icTramAprTrans.png','',
+          '', 
+          () {
+            
+          }
+        ),
+        
+        ItemBoton('','','',3, Icons.calendar_month, 'Epic Box', '20 noviembre 2024','Reservado por: Fulanito','6 horas', Colors.white, Colors.white,false,false,'\$110','','icTramProc.png','icTramProcTrans.png','',
+          '', 
+          () {}
+        ),
+      ]; 
 
-      //final jsonString = serializeItemBotonMenuList(items);      
+      final itemsCanchas = <ItemBoton>[
+        
+        ItemBoton('assets/images/court_epicbox.png','Epic Box','Cancha tipo A',1, Icons.group_add, '7:00 am a 4:00 pm', '6 de julio 2024','Reservado por: Andrea Gómez','2 horas', Colors.white, Colors.white,false,false,'\$5','','icCompras.png','icComprasTrans.png','',
+          '', 
+          () {
+            
+          }
+        ),
+        
+        ItemBoton('assets/images/court_sportbox.png','Sport Box','Cancha tipo B',2, Icons.groups, '9:00 am a 2:00 pm', '8 de agosto 2024','Reservado por: Angel Valdiviezo','5 horas', Colors.white, Colors.white,false,false,'\$84','','icTramApr.png','icTramAprTrans.png','',
+          '', 
+          () {
+            
+          }
+        ),
+        
+        ItemBoton('assets/images/court_epicbox.png','Epic Box 2','Cancha tipo C',3, Icons.calendar_month, '11:00 am a 6:00 pm', '20 noviembre 2024','Reservado por: Fulanito','6 horas', Colors.white, Colors.white,false,false,'\$110','','icTramProc.png','icTramProcTrans.png','',
+          '', 
+          () {}
+        ),
+      ]; 
+
+      final jsonString = serializeItemBotonMenuList(items);
+      final jsonStringCanchas = serializeItemBotonMenuList(itemsCanchas);
 
       //respCmbLst = '$rspRegistro---${json.encode(lstRsp)}---$jsonString---${objPermisos.mainMenu.cardSales}---${objPermisos.mainMenu.cardCollection}';
 
-      return respCmbLst;
+      return '$jsonString---$jsonStringCanchas';
     }
     catch(ex){
       return '';
     }
   }
+
+    Future<String> readCanchas() async {
+
+    try{
+
+      final itemsCanchas = <ItemBoton>[
+        
+        ItemBoton('assets/images/court_epicbox.png','Epic Box','Cancha tipo A',1, Icons.group_add, '7:00 am a 4:00 pm', '6 de julio 2024','Reservado por: Andrea Gómez','2 horas', Colors.white, Colors.white,false,false,'\$5','','icCompras.png','icComprasTrans.png','',
+          '', 
+          () {
+            
+          }
+        ),
+        
+        ItemBoton('assets/images/court_sportbox.png','Sport Box','Cancha tipo B',2, Icons.groups, '9:00 am a 2:00 pm', '8 de agosto 2024','Reservado por: Angel Valdiviezo','5 horas', Colors.white, Colors.white,false,false,'\$84','','icTramApr.png','icTramAprTrans.png','',
+          '', 
+          () {
+            
+          }
+        ),
+        
+        ItemBoton('assets/images/court_epicbox.png','Epic Box 2','Cancha tipo C',3, Icons.calendar_month, '11:00 am a 6:00 pm', '20 noviembre 2024','Reservado por: Fulanito','6 horas', Colors.white, Colors.white,false,false,'\$110','','icTramProc.png','icTramProcTrans.png','',
+          '', 
+          () {}
+        ),
+      ]; 
+
+      final jsonStringCanchas = serializeItemBotonMenuList(itemsCanchas);
+
+      //respCmbLst = '$rspRegistro---${json.encode(lstRsp)}---$jsonString---${objPermisos.mainMenu.cardSales}---${objPermisos.mainMenu.cardCollection}';
+
+      return jsonStringCanchas;
+    }
+    catch(ex){
+      return '';
+    }
+  }
+
 
   Future<String> waitCarga() async {
     

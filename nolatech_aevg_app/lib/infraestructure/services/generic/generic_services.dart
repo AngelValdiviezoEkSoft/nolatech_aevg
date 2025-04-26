@@ -208,6 +208,7 @@ class GenericService extends ChangeNotifier {
   
   Future<dynamic> opcionesMenuPorPerfil(BuildContext context) async {
     lstOp = [
+      /*
       OpcionesMenuModel(
         descMenu: 'Editar Perfil', 
         icono: Icons.person_pin, 
@@ -223,6 +224,7 @@ class GenericService extends ChangeNotifier {
         icono: Icons.info,
         onPress: () => context.push(RoutesDesc().rutaConstruccion),
       ),
+      */
     ];
     return lstOp;
   }
