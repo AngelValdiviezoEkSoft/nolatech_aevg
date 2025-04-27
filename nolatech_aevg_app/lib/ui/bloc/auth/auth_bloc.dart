@@ -1,35 +1,14 @@
 
 import 'package:bloc/bloc.dart';
-//import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
-//import 'package:trust_location/trust_location.dart';
-
 part 'auth_event.dart';
 part 'auth_state.dart';
 
-/*
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
-  AuthBloc() : super(AuthInitial()) {
-    on<AuthEvent>((event, emit) {
-      
-    });
-  }
-}
-*/
-
-class AuthBloc extends Bloc<AuthEvent, AuthState> {
-  //final objEnvironmentProd = EnvironmentProd();
-  //final storage = const FlutterSecureStorage();
-
-  //String _licenseKey = '';
+  
   String _pin = '';
-
-/*
-  final AuthRepository authRepository;
-  final UserPreferences userPreferences;
-  */
 
   AuthBloc() : super(AuthInitial()) {
     on<AppStarted>(_onAppStarted);
@@ -40,11 +19,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   void _onAppStarted(AppStarted event, Emitter<AuthState> emit) async {
-    
-    //var connectivityResult = await (Connectivity().checkConnectivity());
     bool result = await InternetConnectionChecker().hasConnection;
     
-    //if (!connectivityResult.contains(ConnectivityResult.mobile) && !connectivityResult.contains(ConnectivityResult.wifi)) {
     if(!result){
       emit(AuthNoInternet());
     }

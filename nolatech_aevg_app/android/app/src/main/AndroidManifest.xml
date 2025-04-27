@@ -17,7 +17,7 @@
     
     
     <application
-        android:label="nolatech_aevg_app"
+        android:label="Tennis Court"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_ekuasoft">
 

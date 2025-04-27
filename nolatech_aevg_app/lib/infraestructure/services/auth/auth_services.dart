@@ -1,14 +1,10 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:nolatech_aevg_app/config/config.dart';
 import 'package:nolatech_aevg_app/domain/domain.dart';
-import 'package:nolatech_aevg_app/infraestructure/infraestructure.dart';
 import 'package:nolatech_aevg_app/ui/ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:http/http.dart' as http;
-import 'package:go_router/go_router.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 //late Timer _timer;
@@ -96,91 +92,117 @@ class AuthService extends ChangeNotifier {
   login(AuthRequest authRequest) async {
     try {
 
+      String rsp = '';
+
       String resInt = await ValidacionesUtils().validaInternet();
 
       if(resInt.isNotEmpty){
         return 'NI';
       }
 
-      String ruta = '';
-      final objStr = await storage.read(key: 'RespuestaRegistro') ?? '';
-    
-      if(objStr.isNotEmpty)
-      {  
-        ruta = 'https:// /web/session/authenticate';
+      //await storage.write(key: 'UsuarioLog', value: authRequest.login);
+
+      bool esUserValido = false;
+
+      var lstUserReg = await storage.read(key: 'UserReg') ?? '';
+
+      var lstExistenteUsers = deserializeUserReg(lstUserReg);
+        
+      for(int i = 0; i < lstExistenteUsers.length; i++){
+        if( lstExistenteUsers[i].email == authRequest.login 
+            && lstExistenteUsers[i].password == authRequest.password){
+          esUserValido = true;
+          await storage.delete(key: 'UsuarioLog');
+          await storage.write(key: 'UsuarioLog', value: lstExistenteUsers[i].nombres);
+        }
       }
 
-      final Map<String, dynamic> body = {        
-        "params": {
-          "db": authRequest.db,
-          "login": authRequest.login,
-          "password": authRequest.password
-        },
-        "id": null
-      };
-      /*
-      
-      final response = await http.post(
-        Uri.parse(ruta),
-        headers: <String, String>{
-          'Content-Type': EnvironmentsProd().contentType,
-        },
-        body: jsonEncode(body),
-      );
-
-      var rspValidacion = json.decode(response.body);
-
-      if(rspValidacion['error'] != null){
-        return response.body;
+      if(!esUserValido){
+        rsp = 'Usuario inválido';
+      }
+      else{
+        rsp = 'OK';
       }
 
-      final models = [
-        {
-          "model": EnvironmentsProd().modProsp,//"crm.lead",
-          "filters": []
-        },
-        {
-          "model": EnvironmentsProd().modClien,//"res.partner",
-          "filters": []
-        },
-        {
-          "model": EnvironmentsProd().modCampa,//"utm.campaign",
-          "filters": []
-        },
-        {
-          "model": EnvironmentsProd().modOrige,//"utm.source",
-          "filters": []
-        },
-        {
-          "model": EnvironmentsProd().modMedio,//"utm.medium",
-          "filters": []
-        },
-        {
-          "model": EnvironmentsProd().modActiv,//"mail.activity.type",
-          "filters": [
-            ["res_model","=",false]
-          ]
-        },
-        {
-          "model": EnvironmentsProd().modPaise,//"res.country",
-          "filters": []
-        },
-      ];
-
-      await storage.write(key: 'RespuestaLogin', value: response.body);
-
-      //print('Result Login: ${response.body}');
-      
-      await DataInicialService().readModelosApp(models);
-      */
-
-      await storage.write(key: 'UsuarioLog', value: authRequest.login);
-
-      return 'OK';//response.body;
+      return rsp;//response.body;
     } catch (_) {
       //print('Test Error1: $ex');
     }
   }
+
+  
+  Future<String> registraUser(UserAppModel userNew) async {
+    
+    bool esRepetido = false;
+    String rsp = 'Usuario Creado Exitosamente';
+    const storage = FlutterSecureStorage();
+    List<UserAppModel> lstUsuarios = [];
+
+    var lstUserReg = await storage.read(key: 'UserReg') ?? '';
+
+    if(lstUserReg.isEmpty){
+      lstUsuarios.add(userNew);
+    }
+    else{
+      var lstExistenteUsers = deserializeUserReg(lstUserReg);
+      
+      for(int i = 0; i < lstExistenteUsers.length; i++){
+        if(lstExistenteUsers[i].email == userNew.email 
+        || lstExistenteUsers[i].nombres == userNew.nombres 
+        || lstExistenteUsers[i].tlf == userNew.tlf){
+          esRepetido = true;
+        }
+      }
+
+      if(esRepetido){
+        //lstExistenteUsers.add(userNew);
+        rsp = 'Usuario Repetido';
+      }
+    }
+
+    if(!esRepetido){
+      final jsonRegistros = serializeRegistroUsuarios(lstUsuarios);
+
+      storage.write(key: 'UserReg', value: jsonRegistros);
+      storage.write(key: 'UsuarioLog', value: userNew.nombres);
+    }
+
+    return rsp;
+  }
+
+  String serializeRegistroUsuarios(List<UserAppModel> items) {    
+    final serializedList = items.map((item) => serializeUserReg(item)).toList();
+
+    return jsonEncode(serializedList);
+  }
+
+  Map<String, dynamic> serializeUserReg(UserAppModel item) {
+    return {
+      'nombres': item.nombres,
+      'email': item.email,
+      'tlf': item.tlf,
+      'password': item.password,
+      
+    };
+  }
+
+  
+  List<UserAppModel> deserializeUserReg(String jsonString) {
+    final List<dynamic> jsonList = jsonDecode(jsonString);
+    return jsonList.map((json) => deserializeItemUserReg(json)).toList();
+  }
+
+  UserAppModel deserializeItemUserReg(Map<String, dynamic> json) {
+    
+    return UserAppModel(
+      email: json['email'] ?? '',
+      nombres: json['nombres'] ?? '',
+      password: json['password'] ?? '',
+      tlf: json['tlf'] ?? ''
+    );
+  
+  }
+
 /*
   consultaUsuarios(ConsultaDatosRequestModel authRequest, String imei, String key) async {
     final ruta = '${env.apiEndpoint}<imei>/done/data/<model>/model';

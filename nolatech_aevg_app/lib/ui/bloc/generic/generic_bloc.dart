@@ -1,12 +1,9 @@
 import 'dart:convert';
 import 'package:bloc/bloc.dart';
 import 'package:nolatech_aevg_app/domain/domain.dart';
-import 'package:nolatech_aevg_app/infraestructure/infraestructure.dart';
-import 'package:nolatech_aevg_app/ui/ui.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:intl/intl.dart';
 
 part 'generic_event.dart';
 part 'generic_state.dart';

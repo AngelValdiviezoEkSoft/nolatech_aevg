@@ -1,4 +1,6 @@
 
+export 'package:nolatech_aevg_app/ui/bloc/user/user_bloc.dart';
+
 export 'package:nolatech_aevg_app/ui/bloc/gps/gps_bloc.dart';
 
 export 'package:nolatech_aevg_app/ui/bloc/location/location_bloc.dart';

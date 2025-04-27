@@ -72,7 +72,7 @@ class PrincipalStScreen extends State<PrincipalScreen> {
                             context.pop();
 
                             //ignore: use_build_context_synchronously
-                            context.pop();
+                            context.push(objRutasGen.rutaBienvenida);
 
                           },
                           child: Text('Sí', style: TextStyle(color: Colors.blue[200]),),

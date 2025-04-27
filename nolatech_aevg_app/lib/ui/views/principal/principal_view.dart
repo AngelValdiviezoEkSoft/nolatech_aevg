@@ -34,118 +34,123 @@ class PrincipalViewSt extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    return BlocBuilder<GenericBloc, GenericState>(
-        builder: (context,state) {
-          return FutureBuilder(
-            future: state.readPrincipalPage(),
-            builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
-
-              if(!snapshot.hasData) {
-                return Scaffold(
-                  backgroundColor: Colors.white,
-                  body: Center(
-                    child: Image.asset(
-                      "assets/gifs/gif_carga.gif",
-                      height: size.width * 0.85,
-                      width: size.width * 0.85,
-                    ),
-                  ),
-                );
-              }
-                  else {
-                    if(snapshot.data != null && snapshot.data!.isNotEmpty) {
-                      
-              String rspTmp = snapshot.data as String;
-
-              var objRsp = rspTmp.split('---');
-
-              List<ItemBoton> lstMenu = state.deserializeItemBotonMenuList(objRsp[0]);
-              lstCanchasGen = state.deserializeItemBotonMenuList(objRsp[1]);
-
-              List<Widget> itemMap = lstMenu
-              .map((item) => FadeInLeft(
-                    duration: const Duration(milliseconds: 250),
-                    child: ItemsListasWidget(
-                      null,
-                      varIdPosicionMostrar: varPosicionMostrar,
-                      varEsRelevante: item.esRelevante,
-                      varIdNotificacion: item.ordenNot,
-                      varNumIdenti: numeroIdentificacion,
-                      icon: item.icon,
-                      texto: item.mensajeNotificacion,
-                      texto2: item.mensaje2,
-                      texto3: item.fechaNotificacion,
-                      texto4: item.tiempoDesde,
-                      texto5: item.estadoLeido,
-                      color1: item.color1,
-                      color2: item.color2,
-                      onPress: () {},
-                      varMuestraNotificacionesTrAp: 0,
-                      varMuestraNotificacionesTrProc: 0,
-                      varMuestraNotificacionesTrComp: 0,
-                      varMuestraNotificacionesTrInfo: 0,
-                      varIconoNot: item.iconoNotificacion,
-                      varIconoNotTrans: item.rutaImagen,
-                      permiteGestion: permiteGestion,
-                      rutaNavegacion: item.rutaNavegacion,
-                    ),
-                  ))
-              .toList();
-
-                  return ListView(
-                    padding: EdgeInsets.all(16),
-                    children: [
-                      Text('Hola Andrea!',
-                          style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600)),
-                      SizedBox(height: 20),
-                      Text('Canchas',
-                          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500)),
-                      SizedBox(height: 10),
-                      
-                      Container(
-                        width: size.width * 0.9,
-                        height: size.height * 0.42,
-                        color: Colors.transparent,
-                        child: Swiper(
-                          itemBuilder: (BuildContext context, int index) {
-                            return _courtCard(size, index, context);                            
-                          },
-                          itemCount: lstCanchasGen.length,
-                          autoplayDisableOnInteraction: true,
-                          autoplay: true,                          
-                        ),
+    return WillPopScope(        
+        onWillPop: () async => false,
+      child: BlocBuilder<GenericBloc, GenericState>(
+          builder: (context,state) {
+            return FutureBuilder(
+              future: state.readPrincipalPage(),
+              builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+      
+                if(!snapshot.hasData) {
+                  return Scaffold(
+                    backgroundColor: Colors.white,
+                    body: Center(
+                      child: Image.asset(
+                        "assets/gifs/gif_carga.gif",
+                        height: size.width * 0.85,
+                        width: size.width * 0.85,
                       ),
-                      SizedBox(height: 20),
-                      const Text('Reservas programadas',
-                          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500)),
-                      SizedBox(height: size.height * 0.0007),
-                      Container(
-                        margin: const EdgeInsets.only(top: 5),
-                        width: size.width * 0.99,
-                        height: size.height * 0.35,
-                        color: Colors.transparent,
-                        child: ListView(
-                          physics: const BouncingScrollPhysics(),
-                          children: <Widget>[
-                            const SizedBox(
-                              height: 3,
-                            ),
-                            ...itemMap,
-                          ],
-                        ),
-                      ),
-                      //_reservationCard(),
-                    ],
+                    ),
                   );
-                
+                }
+                    else {
+                      if(snapshot.data != null && snapshot.data!.isNotEmpty) {
+                        
+                String rspTmp = snapshot.data as String;
+      
+                var objRsp = rspTmp.split('---');
+      
+                List<ItemBoton> lstMenu = state.deserializeItemBotonMenuList(objRsp[0]);
+                lstCanchasGen = state.deserializeItemBotonMenuList(objRsp[1]);
+      
+                String userLog = objRsp[2];
+      
+                List<Widget> itemMap = lstMenu
+                .map((item) => FadeInLeft(
+                      duration: const Duration(milliseconds: 250),
+                      child: ItemsListasWidget(
+                        null,
+                        varIdPosicionMostrar: varPosicionMostrar,
+                        varEsRelevante: item.esRelevante,
+                        varIdNotificacion: item.ordenNot,
+                        varNumIdenti: numeroIdentificacion,
+                        icon: item.icon,
+                        texto: item.mensajeNotificacion,
+                        texto2: item.mensaje2,
+                        texto3: item.fechaNotificacion,
+                        texto4: item.tiempoDesde,
+                        texto5: item.estadoLeido,
+                        color1: item.color1,
+                        color2: item.color2,
+                        onPress: () {},
+                        varMuestraNotificacionesTrAp: 0,
+                        varMuestraNotificacionesTrProc: 0,
+                        varMuestraNotificacionesTrComp: 0,
+                        varMuestraNotificacionesTrInfo: 0,
+                        varIconoNot: item.iconoNotificacion,
+                        varIconoNotTrans: item.rutaImagen,
+                        permiteGestion: permiteGestion,
+                        rutaNavegacion: item.rutaNavegacion,
+                      ),
+                    ))
+                .toList();
+      
+                    return ListView(
+                      padding: const EdgeInsets.all(16),
+                      children: [
+                        Text('Hola $userLog!',
+                            style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w600)),
+                        const SizedBox(height: 20),
+                        const Text('Canchas',
+                            style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500)),
+                        const SizedBox(height: 10),
+                        
+                        Container(
+                          width: size.width * 0.9,
+                          height: size.height * 0.42,
+                          color: Colors.transparent,
+                          child: Swiper(
+                            itemBuilder: (BuildContext context, int index) {
+                              return _courtCard(size, index, context);                            
+                            },
+                            itemCount: lstCanchasGen.length,
+                            autoplayDisableOnInteraction: true,
+                            autoplay: true,                          
+                          ),
+                        ),
+                        const SizedBox(height: 20),
+                        const Text('Reservas programadas',
+                            style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500)),
+                        SizedBox(height: size.height * 0.0007),
+                        Container(
+                          margin: const EdgeInsets.only(top: 5),
+                          width: size.width * 0.99,
+                          height: size.height * 0.35,
+                          color: Colors.transparent,
+                          child: ListView(
+                            physics: const BouncingScrollPhysics(),
+                            children: <Widget>[
+                              const SizedBox(
+                                height: 3,
+                              ),
+                              ...itemMap,
+                            ],
+                          ),
+                        ),
+                        //_reservationCard(),
+                      ],
+                    );
+                  
+                      }
                     }
-                  }
-
-              return Container();
-            }
-          );
-        },
-      );
+      
+                return Container();
+              }
+            );
+          },
+        ),
+    );
   
   }
 
@@ -171,7 +176,7 @@ class PrincipalViewSt extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: EdgeInsets.all(2),
+              padding: const EdgeInsets.all(2),
               child: Container(
                 width: size.width * 0.85,
                 height: size.height * 0.18,
@@ -182,9 +187,9 @@ class PrincipalViewSt extends StatelessWidget {
                     Row(children: [
                       Text(lstCanchasGen[index].idSolicitud,
                           style: const TextStyle(fontWeight: FontWeight.w600)),
-                      Spacer(),
-                      Icon(Icons.cloud_outlined, size: 16, color: Colors.blue),
-                      Text(' 30%', style: TextStyle(fontSize: 12)),
+                      const Spacer(),
+                      const Icon(Icons.cloud_outlined, size: 16, color: Colors.blue),
+                      const Text(' 30%', style: TextStyle(fontSize: 12)),
                     ]),
                     SizedBox(height: size.height * 0.005),
                     Row(children: [
@@ -216,15 +221,15 @@ class PrincipalViewSt extends StatelessWidget {
                       height: size.height * 0.04,
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Color(0xFF67B226),
+                          backgroundColor: const Color(0xFF67B226),
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(6)),
-                          minimumSize: Size(double.infinity, 36),
+                          minimumSize: const Size(double.infinity, 36),
                         ),
                         onPressed: () {
                           context.push(RoutesDesc().rutaFrmReservation);
                         },
-                        child: Text(
+                        child: const Text(
                           'Reservar',
                           style: TextStyle(color: Colors.white),
                         ),

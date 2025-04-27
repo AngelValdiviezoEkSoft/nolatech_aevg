@@ -66,50 +66,6 @@ class GenericState extends Equatable {
   Future<String> readPrincipalPage() async {
 
     try{
-      /*
-      final registraProspecto = await storage.read(key: 'registraProspecto') ?? '';
-      final registraActividad = await storage.read(key: 'RegistraActividad') ?? '';
-      
-      var connectivityResult = await ValidacionesUtils().validaInternet();
-
-      String rspRegistro = '';
-
-      if(registraProspecto.isNotEmpty && connectivityResult.isEmpty){
-        var objReg = jsonDecode(registraProspecto);
-
-        Map<String, dynamic> jsonMap = jsonDecode(objReg);        
-
-        await storage.delete(key: 'registraProspecto');
-
-        rspRegistro = 'G';
-      }
-
-
-      final resp = await storage.read(key: 'RespuestaLogin') ?? '';
-
-      final data = json.decode(resp);
-      final objTmp = data['result'];
-      final lstFinal = objTmp['allowed_companies'];
-      final objPermisosTmp = objTmp['done_permissions'];
-
-      Map<String, dynamic> dataTmp = json.decode(json.encode(lstFinal));
-
-      List<String> lstRsp = [];
-
-      dataTmp.forEach((key, value) {
-        if(key == objTmp['current_company'].toString()){
-          lstRsp.add(value['name']);
-        }
-      });
-
-      dataTmp.forEach((key, value) {
-        if(key != objTmp['current_company'].toString()){                  
-          lstRsp.add(value['name']);
-        }
-      });
-
-      //String respCmbLst = '';
-*/
       final items = <ItemBoton>[
         
         ItemBoton('','','',1, Icons.group_add, 'Epic Box', '6 de julio 2024','Reservado por: Andrea Gómez','2 horas', Colors.white, Colors.white,false,false,'\$5','','icCompras.png','icComprasTrans.png','',
@@ -154,12 +110,14 @@ class GenericState extends Equatable {
         ),
       ]; 
 
+      const storage = FlutterSecureStorage();
+
       final jsonString = serializeItemBotonMenuList(items);
       final jsonStringCanchas = serializeItemBotonMenuList(itemsCanchas);
 
-      //respCmbLst = '$rspRegistro---${json.encode(lstRsp)}---$jsonString---${objPermisos.mainMenu.cardSales}---${objPermisos.mainMenu.cardCollection}';
+      String nombreLogueado = await storage.read(key: 'UsuarioLog') ?? '';
 
-      return '$jsonString---$jsonStringCanchas';
+      return '$jsonString---$jsonStringCanchas---$nombreLogueado';
     }
     catch(ex){
       return '';

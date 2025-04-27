@@ -89,15 +89,21 @@ class _LoginFormScreenState extends State<AuthScreen> {
 
         const SizedBox(height: 30),
 
-        TextField(
+        TextFormField(
           keyboardType: TextInputType.emailAddress,
           controller: userTxt,
-            decoration: const InputDecoration(
+          decoration: const InputDecoration(
             labelText: 'Email',
             hintText: 'usuario@email.com',
             prefixIcon: Icon(Icons.email_outlined),
             border: UnderlineInputBorder(),
           ),
+          validator: (value) {
+            if (value != null && value.isNotEmpty && !ValidacionesUtils().isValidEmail(value)) {              
+              return 'Correo Inválido';
+            }
+            return '';
+          },
         ),
 
         const SizedBox(height: 20),
@@ -267,15 +273,64 @@ class _LoginFormScreenState extends State<AuthScreen> {
                   return;
                 }
 
-                const storage = FlutterSecureStorage();
+                if(resp == 'OK'){
+                  const storage = FlutterSecureStorage();
                 
-                storage.write(key: 'RecordarContrasenia', value: '$_rememberMe');
+                  storage.write(key: 'RecordarContrasenia', value: '$_rememberMe');
 
-                userTxt.text = '';
-                passWordTxt.text = '';
+                  userTxt.text = '';
+                  passWordTxt.text = '';
 
-                //ignore: use_build_context_synchronously
-                context.push(RoutesDesc().rutaPrincipal);
+                  //ignore: use_build_context_synchronously
+                  context.push(RoutesDesc().rutaPrincipal);
+                }
+                else{
+                    showDialog(
+                    //ignore: use_build_context_synchronously
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        title: Container(
+                          color: Colors.transparent,
+                          height: size.height * 0.22,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              
+                              Container(
+                                color: Colors.transparent,
+                                height: size.height * 0.1,
+                                child: Image.asset('assets/gifs/gifErrorBlanco.gif'),
+                              ),
+
+                              Container(
+                                color: Colors.transparent,
+                                width: size.width * 0.95,
+                                height: size.height * 0.11,
+                                alignment: Alignment.center,
+                                child: AutoSizeText(
+                                  resp,
+                                  maxLines: 2,
+                                  minFontSize: 2,
+                                ),
+                              ),
+                              
+                            ],
+                          )
+                        ),
+                        actions: [
+                          TextButton(
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                            child: Text('Aceptar', style: TextStyle(color: Colors.blue[200]),),
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                
+                }
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: ColorsApp().verdeApp,

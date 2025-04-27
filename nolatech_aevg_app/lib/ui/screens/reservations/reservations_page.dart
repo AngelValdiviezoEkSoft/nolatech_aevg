@@ -300,19 +300,19 @@ class FrmReservationScreenState extends State<FrmReservationScreen> {
                         
                         Container(
                           width: size.width * 0.95,
-                          height: size.height * 0.06,
+                          height: size.height * 0.07,
                           color: Colors.transparent,
                           alignment: Alignment.centerLeft,
                           child: Container(
-                            width: size.width * 0.5,
-                          height: size.height * 0.06,
+                            width: size.width * 0.65,
+                          height: size.height * 0.07,
                           color: Colors.transparent,
                             child: InputDecorator(
                               decoration: InputDecoration(                              
                                 border: OutlineInputBorder(borderRadius: BorderRadius.circular(12))                              
                               ),
                               child: Container(
-                                width: size.width * 0.45,
+                                width: size.width * 0.65,
                                 height: size.height * 0.03,
                                 padding: const EdgeInsets.symmetric(horizontal: 12),
                                 decoration: BoxDecoration(
