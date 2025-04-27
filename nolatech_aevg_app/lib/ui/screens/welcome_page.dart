@@ -16,7 +16,7 @@ class WelcomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
 
     final size = MediaQuery.of(context).size;
-    double fem = MediaQuery.of(context).size.width / 417;
+    //double fem = MediaQuery.of(context).size.width / 417;
 
     return Scaffold(
       body: Stack(
@@ -83,15 +83,15 @@ class WelcomeScreen extends StatelessWidget {
                           context.push(RoutesDesc().rutaDefault);
                         },
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.green[600],
-                          minimumSize: Size(250, 50),
+                          backgroundColor: ColorsApp().verdeApp,
+                          minimumSize: const Size(250, 50),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),
                           ),
                         ),
                         child: const Text('Iniciar sesión', style: TextStyle(color: Colors.white),),
                       ),
-                      SizedBox(height: 15),
+                      const SizedBox(height: 15),
                       ElevatedButton(
                         onPressed: () {
                           context.push(RoutesDesc().rutaRegistro);
@@ -99,12 +99,12 @@ class WelcomeScreen extends StatelessWidget {
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.white.withOpacity(0.3),
                           foregroundColor: Colors.white,
-                          minimumSize: Size(250, 50),
+                          minimumSize: const Size(250, 50),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),
                           ),
                         ),
-                        child: Text('Registrarme'),
+                        child: const Text('Registrarme'),
                       ),
                     ],
                   ),

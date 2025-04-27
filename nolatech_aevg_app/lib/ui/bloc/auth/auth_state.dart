@@ -11,23 +11,20 @@ abstract class AuthState extends Equatable {
     try {
       String rspFinal = 'home';
 
-      var rspReg = await storage.read(key: 'RespuestaRegistro') ?? '';
-      var rspLog = await storage.read(key: 'RespuestaLogin') ?? '';
+      var recPassword = await storage.read(key: 'RecordarContrasenia') ?? '';
                 
       var termCond = await storage.read(key: 'AceptaTermCond');
 
       await storage.write(key: 'fecMem', value: '');
       await storage.write(key: 'idMem', value: '');
 
-      if(rspReg.isEmpty && rspLog.isEmpty){
+      if(recPassword.isEmpty || recPassword == 'false'){
         rspFinal = '';
       }
       else {
-        if(termCond == null || termCond == 'false'){
-          rspFinal = 'termCond';
-        }
-        if(rspLog.isEmpty && rspFinal == 'home'){
-          rspFinal = 'log';
+        
+        if(recPassword == 'true'){
+          rspFinal = 'home';
         }        
       }
       

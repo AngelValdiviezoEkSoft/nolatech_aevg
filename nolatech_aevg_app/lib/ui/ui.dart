@@ -8,3 +8,4 @@ export 'package:nolatech_aevg_app/ui/themes/themes.dart';
 
 export 'package:nolatech_aevg_app/ui/widgets/widgets.dart';
 
+export 'package:nolatech_aevg_app/ui/views/views.dart';

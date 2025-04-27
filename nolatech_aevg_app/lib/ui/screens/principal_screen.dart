@@ -1,17 +1,34 @@
-import 'package:animate_do/animate_do.dart';
-import 'package:card_swiper/card_swiper.dart';
+
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+
 import 'package:go_router/go_router.dart';
 import 'package:nolatech_aevg_app/config/config.dart';
 import 'package:nolatech_aevg_app/domain/domain.dart';
+import 'package:nolatech_aevg_app/infraestructure/infraestructure.dart';
 import 'package:nolatech_aevg_app/ui/ui.dart';
 
+int menuMostrar = 0;
 int varPosicionMostrar = 0;
 List<ItemBoton> lstCanchasGen = [];
 
-class PrincipalScreen extends StatelessWidget {
+
+class PrincipalScreen extends StatefulWidget {
+
   const PrincipalScreen(Key? key) : super(key: key);
+
+  @override
+  PrincipalStScreen createState() => PrincipalStScreen();
+}
+
+class PrincipalStScreen extends State<PrincipalScreen> {
+
+  @override
+  void initState() {
+    super.initState();
+
+    menuMostrar = 0;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,140 +45,214 @@ class PrincipalScreen extends StatelessWidget {
             Text('Tennis',
                 style: TextStyle(
                     color: Colors.white, fontWeight: FontWeight.bold)),
-            Text(' court',
+            const Text(' court',
                 style: TextStyle(
                     color: Color(0xFF2BDE7F), fontWeight: FontWeight.bold)),
-            Spacer(),
+            const Spacer(),
             CircleAvatar(backgroundColor: Colors.grey[200], radius: 14),
-            SizedBox(width: 8),
-            Icon(Icons.notifications_none, color: Colors.white),
+            const SizedBox(width: 8),
+            const Icon(Icons.notifications_none, color: Colors.white),
+            const SizedBox(width: 8),
+            GestureDetector(
+              onTap: () {
+
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: const Text('¿Está seguro que desea cerrar su sesión?'),
+                      
+                      actions: [
+                        TextButton(
+                          onPressed: () async {
+
+                            await AuthService().logOut();
+
+                            //ignore: use_build_context_synchronously
+                            context.pop();
+
+                            //ignore: use_build_context_synchronously
+                            context.pop();
+
+                          },
+                          child: Text('Sí', style: TextStyle(color: Colors.blue[200]),),
+                        ),
+                        TextButton(
+                          onPressed: () {
+
+                            Navigator.of(context).pop();
+
+                            //context.push(objRutasGen.rutaBienvenida);
+
+                          },
+                          child: const Text('No', style: TextStyle(color: Colors.black),),
+                        ),
+                      ],
+                    );
+                  },
+                );
+
+              },
+              child: const Icon(Icons.logout, color: Colors.white)),
           ],
         ),
       ),
-      body: BlocBuilder<GenericBloc, GenericState>(
-        builder: (context,state) {
-          return FutureBuilder(
-            future: state.readPrincipalPage(),
-            builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
-
-              if(!snapshot.hasData) {
-                return Scaffold(
-                  backgroundColor: Colors.white,
-                  body: Center(
-                    child: Image.asset(
-                      "assets/gifs/gif_carga.gif",
-                      height: size.width * 0.85,
-                      width: size.width * 0.85,
+      body: 
+      menuMostrar == 0 ?
+      const PrincipalView(null)
+      :
+      menuMostrar == 1 ?
+      const ReservationsView()
+      : 
+      const FavoritesView(),
+      bottomNavigationBar: Container(
+          color: Colors.white,
+          height: size.height * 0.08,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              SizedBox(width: size.width * 0.01,),
+              InkWell(
+                onTap: () {
+                  setState(() {
+                    menuMostrar = 0;
+                  });
+                },
+                borderRadius: BorderRadius.circular(50),
+                child: Container(
+                  width: size.width * 0.17,
+                  height: size.height * 0.07,
+                  //color: Colors.red,
+                  decoration: BoxDecoration(
+                    color: menuMostrar == 0 ? ColorsApp().verdeApp : Colors.transparent,
+                    border: Border.all(
+                      color: Colors.transparent,  // Color del borde
+                      width: 2,            // Grosor del borde
                     ),
+                    borderRadius: BorderRadius.circular(12), // Bordes redondeados
                   ),
-                );
-              }
-                  else {
-                    if(snapshot.data != null && snapshot.data!.isNotEmpty) {
-                      
-              String rspTmp = snapshot.data as String;
-
-              var objRsp = rspTmp.split('---');
-
-              List<ItemBoton> lstMenu = state.deserializeItemBotonMenuList(objRsp[0]);
-              lstCanchasGen = state.deserializeItemBotonMenuList(objRsp[1]);
-
-              List<Widget> itemMap = lstMenu
-              .map((item) => FadeInLeft(
-                    duration: const Duration(milliseconds: 250),
-                    child: ItemsListasWidget(
-                      null,
-                      varIdPosicionMostrar: varPosicionMostrar,
-                      varEsRelevante: item.esRelevante,
-                      varIdNotificacion: item.ordenNot,
-                      varNumIdenti: numeroIdentificacion,
-                      icon: item.icon,
-                      texto: item.mensajeNotificacion,
-                      texto2: item.mensaje2,
-                      texto3: item.fechaNotificacion,
-                      texto4: item.tiempoDesde,
-                      texto5: item.estadoLeido,
-                      color1: item.color1,
-                      color2: item.color2,
-                      onPress: () {},
-                      varMuestraNotificacionesTrAp: 0,
-                      varMuestraNotificacionesTrProc: 0,
-                      varMuestraNotificacionesTrComp: 0,
-                      varMuestraNotificacionesTrInfo: 0,
-                      varIconoNot: item.iconoNotificacion,
-                      varIconoNotTrans: item.rutaImagen,
-                      permiteGestion: permiteGestion,
-                      rutaNavegacion: item.rutaNavegacion,
-                    ),
-                  ))
-              .toList();
-
-                  return ListView(
-                    padding: EdgeInsets.all(16),
+                  child: Column(
                     children: [
-                      Text('Hola Andrea!',
-                          style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600)),
-                      SizedBox(height: 20),
-                      Text('Canchas',
-                          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500)),
-                      SizedBox(height: 10),
-                      
                       Container(
-                        width: size.width * 0.9,
-                        height: size.height * 0.42,
+                        width: size.width * 0.17,
+                        height: size.height * 0.03,
                         color: Colors.transparent,
-                        child: Swiper(
-                          itemBuilder: (BuildContext context, int index) {
-                            return _courtCard(size, index, context);                            
+                        child: IconButton(
+                          icon: Icon(Icons.home_outlined, color: menuMostrar == 0 ? Colors.white : Colors.black,),
+                          color: Colors.white,                  
+                          onPressed: () async {                                        
+                            setState(() {
+                              menuMostrar = 0;
+                            });
                           },
-                          itemCount: lstCanchasGen.length,
-                          autoplayDisableOnInteraction: true,
-                          autoplay: true,                          
                         ),
                       ),
-                      SizedBox(height: 20),
-                      Text('Reservas programadas',
-                          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500)),
-                      SizedBox(height: size.height * 0.0007),
                       Container(
-                        margin: const EdgeInsets.only(top: 5),
-                        width: size.width * 0.99,
-                        height: size.height * 0.35,
+                        width: size.width * 0.17,
+                        height: size.height * 0.03,
                         color: Colors.transparent,
-                        child: ListView(
-                          physics: const BouncingScrollPhysics(),
-                          children: <Widget>[
-                            const SizedBox(
-                              height: 3,
-                            ),
-                            ...itemMap,
-                          ],
+                        alignment: Alignment.center,
+                        child: Text('Inicio', style: TextStyle(color: menuMostrar == 0 ? Colors.white : Colors.black),),
+                      )
+                    ],
+                  ),
+                ),
+              ),
+              InkWell(
+                onTap: () {
+                  setState(() {
+                    menuMostrar = 1;
+                  });
+                },
+                borderRadius: BorderRadius.circular(50),
+                child: Container(
+                  width: size.width * 0.17,
+                  height: size.height * 0.07,
+                  decoration: BoxDecoration(
+                    color: menuMostrar == 1 ? ColorsApp().verdeApp : Colors.transparent,
+                    border: Border.all(
+                      color: Colors.transparent,  // Color del borde
+                      width: 2,            // Grosor del borde
+                    ),
+                    borderRadius: BorderRadius.circular(12), // Bordes redondeados
+                  ),
+                  child: Column(
+                    children: [
+                      Container(
+                        width: size.width * 0.17,
+                        height: size.height * 0.03,
+                        color: Colors.transparent,
+                        child: IconButton(
+                          icon: Icon(Icons.calendar_today, color: menuMostrar == 1 ? Colors.white : Colors.black,),
+                          color: Colors.white,                  
+                          onPressed: () async {
+                            setState(() {
+                              menuMostrar = 1;
+                            });
+                          },
                         ),
                       ),
-                      //_reservationCard(),
+                      Container(
+                        width: size.width * 0.17,
+                        height: size.height * 0.03,
+                        color: Colors.transparent,
+                        alignment: Alignment.center,
+                        child: Text('Reservas', style: TextStyle(color: menuMostrar == 1 ? Colors.white : Colors.black),),
+                      )
+                    
                     ],
-                  );
-                
-                    }
-                  }
-
-              return Container();
-            }
-          );
-        },
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: 0,
-        selectedItemColor: Color(0xFF67B226),
-        unselectedItemColor: Colors.grey,
-        items: [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Inicio'),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.calendar_today), label: 'Reservas'),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.favorite_border), label: 'Favoritos'),
-        ],
-      ),
+                  ),
+                ),
+              ),
+              InkWell(
+                onTap: () {
+                  setState(() {
+                    menuMostrar = 2;
+                  });
+                },
+                borderRadius: BorderRadius.circular(50),
+                child: Container(
+                  width: size.width * 0.17,
+                  height: size.height * 0.07,
+                  decoration: BoxDecoration(
+                    color: menuMostrar == 2 ? ColorsApp().verdeApp : Colors.transparent,
+                    border: Border.all(
+                      color: Colors.transparent,  // Color del borde
+                      width: 2,            // Grosor del borde
+                    ),
+                    borderRadius: BorderRadius.circular(12), // Bordes redondeados
+                  ),
+                  child: Column(
+                    children: [
+                      Container(
+                        width: size.width * 0.17,
+                        height: size.height * 0.03,
+                        color: Colors.transparent,
+                        child: IconButton(
+                          icon: Icon(Icons.favorite_border, color: menuMostrar == 2 ? Colors.white : Colors.black,),
+                          color: Colors.white,                  
+                          onPressed: () async {
+                            setState(() {
+                              menuMostrar = 2;
+                            });
+                          },
+                        ),
+                      ),
+                      Container(
+                        width: size.width * 0.17,
+                        height: size.height * 0.03,
+                        color: Colors.transparent,
+                        alignment: Alignment.center,
+                        child: Text('Favoritos', style: TextStyle(color: menuMostrar == 2 ? Colors.white : Colors.black),),
+                      )
+                    ],
+                  ),
+                ),
+              ),
+              SizedBox(width: size.width * 0.01,),
+            ],
+          ),
+        ),
     );
   }
 
@@ -266,4 +357,6 @@ class PrincipalScreen extends StatelessWidget {
       isThreeLine: true,
     );
   }
+
 }
+

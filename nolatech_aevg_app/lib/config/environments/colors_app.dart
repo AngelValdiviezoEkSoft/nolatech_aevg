@@ -2,6 +2,11 @@
 import 'package:flutter/material.dart';
 
 class ColorsApp {
+  final Color verdeApp = const Color(0xFF82BC00);
+  final Color verdeBtnInicio = const Color(0xFFAAF724);
+
+  final Color azulLabelLogin = const Color(0xFF346BC3);
+
   final Color negro = const Color(0xff262626);
 
   final Color grisClaro = const Color.fromRGBO(205, 205, 205, 1);

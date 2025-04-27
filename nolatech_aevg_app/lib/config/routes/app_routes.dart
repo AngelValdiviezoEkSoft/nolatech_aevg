@@ -8,7 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 final objRutas = RoutesDesc();
 
 final GoRouter appRouter = GoRouter(
-  routes: [//  
+  routes: [//    
     GoRoute(
       path: objRutas.rutaDefault,
       builder: (context, state) => BlocBuilder<AuthBloc, AuthState>(
@@ -34,12 +34,12 @@ final GoRouter appRouter = GoRouter(
                       return const AuthScreen();
                     }
                     if(snapshot.data == 'home') {
-                      return const HomeScreen(null);
+                      return const PrincipalScreen(null);
                     }
                 }
               }
               
-              return WelcomeScreen(null);
+              return const WelcomeScreen(null);
             }
           );
         },
@@ -48,6 +48,10 @@ final GoRouter appRouter = GoRouter(
     GoRoute(
       path: objRutas.rutaFrmReservation,
       builder: (context, state) => const FrmReservationScreen(),      
+    ),
+    GoRoute(
+      path: objRutas.rutaReservationList,
+      builder: (context, state) => const ReservationListScreen(),      
     ),
     GoRoute(
       path: objRutas.rutaRegistro,

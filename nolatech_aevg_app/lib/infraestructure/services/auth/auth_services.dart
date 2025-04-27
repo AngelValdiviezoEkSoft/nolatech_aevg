@@ -118,6 +118,7 @@ class AuthService extends ChangeNotifier {
         },
         "id": null
       };
+      /*
       
       final response = await http.post(
         Uri.parse(ruta),
@@ -127,19 +128,11 @@ class AuthService extends ChangeNotifier {
         body: jsonEncode(body),
       );
 
-      //print('Test: ${response.body}');
-      
       var rspValidacion = json.decode(response.body);
 
       if(rspValidacion['error'] != null){
         return response.body;
       }
-
-      /*
-      if(rspValidacion['result']['mensaje'] != null && (rspValidacion['result']['mensaje'].toString().trim().toLowerCase() == MensajeValidacion().tockenNoValido || rspValidacion['result']['mensaje'].toString().trim().toLowerCase() == MensajeValidacion().tockenExpirado)){        
-        await login(authRequest);
-      }
-      */
 
       final models = [
         {
@@ -179,8 +172,11 @@ class AuthService extends ChangeNotifier {
       //print('Result Login: ${response.body}');
       
       await DataInicialService().readModelosApp(models);
-      
-      return response.body;
+      */
+
+      await storage.write(key: 'UsuarioLog', value: authRequest.login);
+
+      return 'OK';//response.body;
     } catch (_) {
       //print('Test Error1: $ex');
     }
@@ -251,16 +247,7 @@ class AuthService extends ChangeNotifier {
   }
 
   Future logOut() async {
-    await storage.write(key: 'RespuestaLogin', value: '');
-    
-    await storage.write(key: 'RespuestaProspectos', value: '');
-    await storage.write(key: 'RespuestaClientes', value: '');
-
-    await storage.write(key: 'cmbCampania', value: '');
-    await storage.write(key: 'cmbOrigen', value: '');
-    await storage.write(key: 'cmbMedia', value: '');
-    await storage.write(key: 'cmbActividades', value: '');
-    await storage.write(key: 'cmbPaises', value: '');
+    await storage.write(key: 'RecordarContrasenia', value: '');
     
     return;
   }

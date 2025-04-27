@@ -5,6 +5,7 @@ class RoutesDesc{
   String rutaRegistro = '/rutaRegistro';
   String rutaPrincipal = '/rutaPrincipal';
   String rutaFrmReservation = '/rutaFrmReservation';
+  String rutaReservationList = '/rutaReservationList';
 
   //imágenes 
   String rutaImagenes = 'assets/images/';
