@@ -1,4 +1,6 @@
 
+import 'dart:convert';
+
 import 'package:auto_size_text/auto_size_text.dart';
 
 import 'package:flutter/material.dart';
@@ -6,6 +8,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nolatech_aevg_app/config/config.dart';
+import 'package:nolatech_aevg_app/domain/domain.dart';
+import 'package:nolatech_aevg_app/infraestructure/infraestructure.dart';
 import 'package:nolatech_aevg_app/ui/ui.dart';
 
 class FavoritesView extends StatefulWidget {
@@ -37,7 +41,7 @@ class _FavoritesViewState extends State<FavoritesView> {
     return BlocBuilder<GenericBloc, GenericState>(
         builder: (context,state) {
           return FutureBuilder(
-            future: state.readPrincipalPage(),
+            future: CanchasService().listaCanchasFavoritas(),
             builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
 
               if(!snapshot.hasData) {
@@ -55,14 +59,19 @@ class _FavoritesViewState extends State<FavoritesView> {
                   else {
                     if (snapshot.hasData) {
 
-                String objRsp = snapshot.data as String;
+                String objRspStr = snapshot.data as String;
 
-                if(objRsp.isNotEmpty){
-                  
-                  
-                } else {
-                  listaVaciaPrp = true;
-                }
+                List<dynamic> canchasListDynamic = jsonDecode(objRspStr);
+
+                // Convertir cada elemento de la lista dinámica a un objeto Usuario
+                List<CanchasModel> usuarios = canchasListDynamic
+                    .map((item) => CanchasModel.fromJson(item as Map<String, dynamic>))
+                    .toList();
+
+                //CanchasService().
+
+                List<CanchasModel> objRsp = usuarios;
+
 
                 return SingleChildScrollView(
                   child: Column(
@@ -92,7 +101,7 @@ class _FavoritesViewState extends State<FavoritesView> {
                         child: Scaffold(
                           body: ListView.builder(
                             controller: scrollListaClt,
-                            itemCount: 1,
+                            itemCount: objRsp.length,
                             itemBuilder: ( _, int index ) {
                           
                               return Slidable(
@@ -150,15 +159,39 @@ class _FavoritesViewState extends State<FavoritesView> {
                                             crossAxisAlignment: CrossAxisAlignment.center,
                                             children: [
                                               SizedBox(width: size.width * 0.01,),
-                                              Container(
-                                                color: Colors.transparent,
-                                                width: size.width * 0.14,
-                                                height: size.height * 0.1,
-                                                child: CircleAvatar(
-                                                  radius: 30.0,
-                                                  backgroundColor: Colors.grey[200],
-                                                  child: const Icon(Icons.person, color: Colors.grey, size: 40.0),
+                                              
+                                              GestureDetector(
+                                                onTap: () {
+                                                  //context.push(rutaNavegacionFin!);
+                                                },
+                                                child: Stack(
+                                                  alignment: Alignment.center,
+                                                  children: [
+                                                    // El círculo de fondo
+                                                    Container(
+                                                      width: size.width * 0.14,
+                                                      height: size.height * 0.1,
+                                                      /*
+                                                      decoration: const BoxDecoration(
+                                                        shape: BoxShape.circle,
+                                                        color: Color.fromARGB(255, 224, 232, 235),  // Color de fondo
+                                                      ),
+                                                      */
+                                                      color: Colors.transparent,
+                                                      child: Image.asset(objRsp[index].image,
+                                                        width: 60, height: 40, fit: BoxFit.cover),
+                                                    ),
+                                                    // El icono central (usamos un icono de grupo de personas)
+                                                    /*
+                                                    Icon(
+                                                      icon, // Icono similar al de personas
+                                                      size: 30,  // Tamaño del icono
+                                                      color: Colors.blue[900],  // Color del icono
+                                                    ),
+                                                    */
+                                                  ],
                                                 ),
+                                                
                                               ),
                                               Container(
                                                 color: Colors.transparent,
@@ -173,8 +206,7 @@ class _FavoritesViewState extends State<FavoritesView> {
                                                     width: size.width * 0.54,
                                                     height: size.height * 0.04,
                                                     child: Text(
-                                                      'Test 1',
-                                                      //prospectosFiltrados[index].name,
+                                                      objRsp[index].title,
                                                       style: const TextStyle(
                                                         fontWeight: FontWeight.bold,                                                                
                                                         color: Colors.black
@@ -189,7 +221,7 @@ class _FavoritesViewState extends State<FavoritesView> {
                                                     width: size.width * 0.54,
                                                     height: size.height * 0.04,
                                                     child: Text(
-                                                      'Test 2',
+                                                      objRsp[index].description,
                                                       //prospectosFiltrados[index].contactName ?? '',
                                                       style: const TextStyle(
                                                         fontWeight: FontWeight.bold,                                                                
@@ -200,54 +232,13 @@ class _FavoritesViewState extends State<FavoritesView> {
                                                       textAlign: TextAlign.left,
                                                     ),
                                                   ),
-                                                  Container(
-                                                color: Colors.transparent,
-                                                width: size.width * 0.54,
-                                                height: size.height * 0.035,
-                                                child: RichText(
-                                                  overflow: TextOverflow.ellipsis,
-                                                  text: TextSpan(
-                                                    children: [
-                                                      const TextSpan(
-                                                        text: 'Email: ',
-                                                        style: TextStyle(color: Colors.black)
-                                                      ),
-                                                      TextSpan(
-                                                        //text: prospectosFiltrados[index].emailFrom,
-                                                        style: const TextStyle(color: Colors.blue)
-                                                      ),
-                                                    ]
-                                                  ),
-                                                )
-                                            
-                                              ),
-                                              Container(
-                                                color: Colors.transparent,
-                                                width: size.width * 0.54,
-                                                height: size.height * 0.035,
-                                                  child: 
-                                                  RichText(
-                                                    overflow: TextOverflow.ellipsis,
-                                                    text: TextSpan(
-                                                      children: [
-                                                        const TextSpan(
-                                                          text: 'Teléfono: ',
-                                                          style: TextStyle(color: Colors.black)
-                                                        ),
-                                                        TextSpan(
-                                                          //text: prospectosFiltrados[index].phone,
-                                                          style: const TextStyle(color: Colors.blue)
-                                                        ),
-                                                      ]
-                                                    ),
-                                                  )
-                                              ),
+                                               
                                               Container(
                                                   color: Colors.transparent,
                                                   width: size.width * 0.54,
                                                 height: size.height * 0.035,
                                                   child: AutoSizeText(
-                                                      'Test 3',
+                                                      objRsp[index].range,
                                                       //prospectosFiltrados[index].stageId.name,
                                                         style: const TextStyle(
                                                           fontWeight: FontWeight.bold,
@@ -266,68 +257,7 @@ class _FavoritesViewState extends State<FavoritesView> {
                                             ],
                                           )
                                         ),
-                                        Container(
-                                          width: size.width * 0.11,
-                                          height: size.height * 0.17,
-                                          alignment: Alignment.center,
-                                          decoration: BoxDecoration(
-                                            color: Colors.black12, // Color del óvalo
-                                            borderRadius: BorderRadius.circular(50), // Bordes redondeados para el óvalo
-                                          ),
-                                          child: Column(
-                                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                            children: [
-                                              Container(
-                                                color: Colors.transparent,
-                                                height: size.height * 0.03,
-                                                alignment: Alignment.topCenter,
-                                                child: IconButton(
-                                                  icon: const Icon(Icons.location_pin, color: Colors.grey, size: 20,),
-                                                  onPressed: () {
-                                                    /*
-                                                    final gpsBloc = BlocProvider.of<GpsBloc>(context);
-                                                      gpsBloc.askGpsAccess();
-                                                      */
-                                                    //context.push(Rutas().rutaMap);
-                                                  },
-                                                ),
-                                              ),
-                                              Container(
-                                                color: Colors.transparent,
-                                                height: size.height * 0.03,
-                                                alignment: Alignment.topCenter,
-                                                child: IconButton(
-                                                  icon: const Icon(Icons.route, color: Colors.grey, size: 20,),
-                                                  onPressed: () {
-                                                    
-                                                  },
-                                                ),
-                                              ),
-                                              Container(
-                                                color: Colors.transparent,
-                                                height: size.height * 0.03,
-                                                child: IconButton(
-                                                  icon: const Icon(Icons.info, color: Colors.grey, size: 20,),
-                                                  onPressed: () {
-                                                    /*
-                                                    objDatumCrmLead = prospectosFiltrados[index];
-                                                    
-                                                    //ignore: use_build_context_synchronously
-                                                    FocusScope.of(context).unfocus();
-                                                    
-                                                    terminoBusqueda = '';
-                                                    filtroPrspTxt = TextEditingController();
-                                                    
-                                                    context.push(Rutas().rutaEditProsp);
-                                                    */
-                                                  },
-                                                ),
-                                              ),
-                                              SizedBox(height: size.height * 0.004,)
-                                            ],
-                                          ),
-                                        ),
-                                        SizedBox(width: size.width * 0.01,)
+                                        
                                       ],
                                       ),
                                     ),
@@ -397,7 +327,7 @@ class _FavoritesViewState extends State<FavoritesView> {
               color: Colors.transparent,
               child: ClipRRect(
                 borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
-                child: Image.asset(lstCanchasGen[index].tipoNotificacion,//'assets/images/court_epicbox.png',
+                child: Image.asset(lstCanchasGen[index].image,//'assets/images/court_epicbox.png',
                     height: 120, width: double.infinity, fit: BoxFit.cover),
               ),
             ),
@@ -411,7 +341,7 @@ class _FavoritesViewState extends State<FavoritesView> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Row(children: [
-                      Text(lstCanchasGen[index].idSolicitud,
+                      Text(lstCanchasGen[index].title,
                           style: const TextStyle(fontWeight: FontWeight.w600)),
                       Spacer(),
                       Icon(Icons.cloud_outlined, size: 16, color: Colors.blue),
@@ -419,7 +349,7 @@ class _FavoritesViewState extends State<FavoritesView> {
                     ]),
                     SizedBox(height: size.height * 0.005),
                     Row(children: [
-                      Text(lstCanchasGen[index].idNotificacionGen,
+                      Text(lstCanchasGen[index].description,
                           style:
                               TextStyle(color: Colors.grey[600], fontSize: 12)),
                     ]),
@@ -428,7 +358,7 @@ class _FavoritesViewState extends State<FavoritesView> {
                       children: [
                         const Icon(Icons.calendar_today, size: 14, color: Colors.grey),
                         SizedBox(width: size.width * 0.0065),
-                        Text(lstCanchasGen[index].mensaje2, style: const TextStyle(fontSize: 12)),
+                        Text(lstCanchasGen[index].date, style: const TextStyle(fontSize: 12)),
                       ],
                     ),
                     SizedBox(height: size.height * 0.005),
@@ -436,7 +366,7 @@ class _FavoritesViewState extends State<FavoritesView> {
                       children: [
                         const Icon(Icons.access_time, size: 14, color: Colors.green),
                         SizedBox(width: 4),
-                        Text(lstCanchasGen[index].mensajeNotificacion,
+                        Text(lstCanchasGen[index].range,
                             style: TextStyle(fontSize: 12)),
                       ],
                     ),

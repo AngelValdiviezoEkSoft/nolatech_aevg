@@ -10,7 +10,7 @@ import 'package:nolatech_aevg_app/ui/ui.dart';
 
 int menuMostrar = 0;
 int varPosicionMostrar = 0;
-List<ItemBoton> lstCanchasGen = [];
+List<CanchasModel> lstCanchasGen = [];
 
 
 class PrincipalScreen extends StatefulWidget {
@@ -38,7 +38,7 @@ class PrincipalStScreen extends State<PrincipalScreen> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        backgroundColor: Color(0xFF67B226),
+        backgroundColor: const Color(0xFF67B226),
         elevation: 0,
         title: Row(
           children: [
@@ -267,6 +267,7 @@ class PrincipalStScreen extends State<PrincipalScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
+            /*
             Container(
               width: size.width * 0.9,
               height: size.height * 0.22,
@@ -277,6 +278,7 @@ class PrincipalStScreen extends State<PrincipalScreen> {
                     height: 120, width: double.infinity, fit: BoxFit.cover),
               ),
             ),
+            
             Padding(
               padding: EdgeInsets.all(2),
               child: Container(
@@ -341,6 +343,7 @@ class PrincipalStScreen extends State<PrincipalScreen> {
                 ),
               ),
             ),
+          */
           ],
         ),
       ),

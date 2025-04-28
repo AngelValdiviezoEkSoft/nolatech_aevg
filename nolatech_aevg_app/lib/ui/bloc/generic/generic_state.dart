@@ -88,8 +88,11 @@ class GenericState extends Equatable {
         ),
       ]; 
 
-      final itemsCanchas = <ItemBoton>[
-        
+      final itemsCanchas = <CanchasModel>[
+        CanchasModel(id: 1, date: '6 de julio 2024', description: 'Cancha tipo A', value: '\$5', like: false, title: 'Epic Box', image: 'assets/images/court_epicbox.png', range: '7:00 am a 4:00 pm'),
+        CanchasModel(id: 2, date: '8 de agosto 2024', description: 'Cancha tipo B', value: '\$15', like: false, title: 'Epic Box', image: 'assets/images/court_sportbox.png', range: '9:00 am a 2:00 pm'),
+        CanchasModel(id: 3, date: '20 de noviembre 2024', description: 'Cancha tipo C', value: '\$25', like: false, title: 'Epic Box', image: 'assets/images/court_epicbox.png', range: '11:00 am a 6:00 pm'),
+        /*
         ItemBoton('assets/images/court_epicbox.png','Epic Box','Cancha tipo A',1, Icons.group_add, '7:00 am a 4:00 pm', '6 de julio 2024','Reservado por: Andrea Gómez','2 horas', Colors.white, Colors.white,false,false,'\$5','','icCompras.png','icComprasTrans.png','',
           '', 
           () {
@@ -108,12 +111,13 @@ class GenericState extends Equatable {
           '', 
           () {}
         ),
+        */
       ]; 
 
       const storage = FlutterSecureStorage();
 
       final jsonString = serializeItemBotonMenuList(items);
-      final jsonStringCanchas = serializeItemBotonMenuList(itemsCanchas);
+      final jsonStringCanchas = serializeItemCanchasList(itemsCanchas);
 
       String nombreLogueado = await storage.read(key: 'UsuarioLog') ?? '';
 
@@ -235,7 +239,29 @@ class GenericState extends Equatable {
     return jsonList.map((json) => deserializeItemBotonMenu(json)).toList();
   }
 
-  ItemBoton deserializeItemBotonMenu(Map<String, dynamic> json) {
+//
+
+  String serializeItemCanchasList(List<CanchasModel> items) {    
+    final serializedList = items.map((item) => serializeItemCanchasModel(item)).toList();
+
+    return jsonEncode(serializedList);
+  }
+
+    Map<String, dynamic> serializeItemCanchasModel(CanchasModel item) {
+    return {
+      'id': item.id,
+      'date': item.date,
+      'description': item.description,
+      'image': item.image,
+      'like': item.like,
+      'range': item.range,
+      'title': item.title,
+      'value': item.value
+    };
+
+  }
+
+    ItemBoton deserializeItemBotonMenu(Map<String, dynamic> json) {
     IconData iconData;
     
     try{
@@ -272,6 +298,29 @@ class GenericState extends Equatable {
     );
   
   }
+
+
+  List<CanchasModel> deserializeItemCanchasList(String jsonString) {
+    final List<dynamic> jsonList = jsonDecode(jsonString);
+    return jsonList.map((json) => deserializeCanchasModel(json)).toList();
+  }
+
+  CanchasModel deserializeCanchasModel(Map<String, dynamic> json) {
+    
+    return CanchasModel(
+      date: json['date'] ?? '',
+      description: json['description'] ?? '',
+      id: json['id'] ?? 0,
+      image: json['image'] ?? '',
+      like: json['like'] ?? false,
+      range: json['range'] ?? '',
+      title: json['title'] ?? '',
+      value: json['value'] ?? ''      
+    );
+  
+  }
+
+
 
 }
 

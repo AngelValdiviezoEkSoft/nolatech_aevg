@@ -417,6 +417,7 @@ class _ReservationsViewState extends State<ReservationsView> {
       width: size.width * 0.55,
       height: size.height * 0.5,
       color: Colors.transparent,
+      /*
       child: Card(
         elevation: 2,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
@@ -500,6 +501,7 @@ class _ReservationsViewState extends State<ReservationsView> {
           ],
         ),
       ),
+    */
     );
   }
 

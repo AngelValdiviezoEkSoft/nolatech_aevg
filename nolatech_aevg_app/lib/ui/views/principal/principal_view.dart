@@ -1,8 +1,11 @@
+import 'dart:convert';
+
 import 'package:animate_do/animate_do.dart';
 import 'package:card_swiper/card_swiper.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nolatech_aevg_app/config/config.dart';
 import 'package:nolatech_aevg_app/domain/domain.dart';
@@ -62,7 +65,7 @@ class PrincipalViewSt extends StatelessWidget {
                 var objRsp = rspTmp.split('---');
       
                 List<ItemBoton> lstMenu = state.deserializeItemBotonMenuList(objRsp[0]);
-                lstCanchasGen = state.deserializeItemBotonMenuList(objRsp[1]);
+                lstCanchasGen = state.deserializeItemCanchasList(objRsp[1]);
       
                 String userLog = objRsp[2];
       
@@ -171,7 +174,7 @@ class PrincipalViewSt extends StatelessWidget {
               color: Colors.transparent,
               child: ClipRRect(
                 borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
-                child: Image.asset(lstCanchasGen[index].tipoNotificacion,//'assets/images/court_epicbox.png',
+                child: Image.asset(lstCanchasGen[index].image,//'assets/images/court_epicbox.png',
                     height: 120, width: double.infinity, fit: BoxFit.cover),
               ),
             ),
@@ -185,7 +188,7 @@ class PrincipalViewSt extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Row(children: [
-                      Text(lstCanchasGen[index].idSolicitud,
+                      Text(lstCanchasGen[index].title,
                           style: const TextStyle(fontWeight: FontWeight.w600)),
                       const Spacer(),
                       const Icon(Icons.cloud_outlined, size: 16, color: Colors.blue),
@@ -193,7 +196,7 @@ class PrincipalViewSt extends StatelessWidget {
                     ]),
                     SizedBox(height: size.height * 0.005),
                     Row(children: [
-                      Text(lstCanchasGen[index].idNotificacionGen,
+                      Text(lstCanchasGen[index].date,
                           style:
                               TextStyle(color: Colors.grey[600], fontSize: 12)),
                     ]),
@@ -202,7 +205,7 @@ class PrincipalViewSt extends StatelessWidget {
                       children: [
                         const Icon(Icons.calendar_today, size: 14, color: Colors.grey),
                         SizedBox(width: size.width * 0.0065),
-                        Text(lstCanchasGen[index].mensaje2, style: const TextStyle(fontSize: 12)),
+                        Text(lstCanchasGen[index].description, style: const TextStyle(fontSize: 12)),
                       ],
                     ),
                     SizedBox(height: size.height * 0.005),
@@ -210,7 +213,7 @@ class PrincipalViewSt extends StatelessWidget {
                       children: [
                         const Icon(Icons.access_time, size: 14, color: Colors.green),
                         SizedBox(width: 4),
-                        Text(lstCanchasGen[index].mensajeNotificacion,
+                        Text(lstCanchasGen[index].range,
                             style: TextStyle(fontSize: 12)),
                       ],
                     ),
@@ -227,6 +230,13 @@ class PrincipalViewSt extends StatelessWidget {
                           minimumSize: const Size(double.infinity, 36),
                         ),
                         onPressed: () {
+                          const storageTmp = FlutterSecureStorage();
+                          final jsonRegistros = serializeCanchasObj(lstCanchasGen[index]);
+
+                          String jsonString = jsonEncode(jsonRegistros);
+
+                          storageTmp.write(key: 'CanchaAReservar', value: jsonString);
+                          
                           context.push(RoutesDesc().rutaFrmReservation);
                         },
                         child: const Text(
@@ -243,6 +253,17 @@ class PrincipalViewSt extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Map<String, dynamic> serializeCanchasObj(CanchasModel item) {
+    return {
+      'id': item.id,
+      'date': item.date,
+      'description': item.description,
+      'title': item.title,
+      'value': item.value,    
+      'image': item.image
+    };
   }
 
 }

@@ -1,29 +1,25 @@
-import 'dart:convert';
-
 import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:go_router/go_router.dart';
 //import 'package:date_ranger/date_ranger.dart';
 import 'package:nolatech_aevg_app/domain/domain.dart';
-import 'package:nolatech_aevg_app/infraestructure/infraestructure.dart';
 import 'package:nolatech_aevg_app/ui/ui.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 List<ItemBoton> lstCanchasReserv = [];
 bool likeIt = false;
 
-class FrmReservationScreen extends StatefulWidget {
+class FrmReservationView extends StatefulWidget {
   
-  const FrmReservationScreen({super.key});
+  const FrmReservationView({super.key});
 
   @override
-  FrmReservationScreenState createState() => FrmReservationScreenState();
+  FrmReservationViewState createState() => FrmReservationViewState();
 
 }
 
-class FrmReservationScreenState extends State<FrmReservationScreen> {
+class FrmReservationViewState extends State<FrmReservationView> {
   
   String? horaInicio;
   String? horaFin;
@@ -236,21 +232,9 @@ class FrmReservationScreenState extends State<FrmReservationScreen> {
                               top: 12,
                               right: 12,
                               child: GestureDetector(
-                                onTap: () async {
-                                  
-                                  const storageTmp = FlutterSecureStorage();
-                                  var objCancha = await storageTmp.read(key: 'CanchaAReservar') ?? '';
-
-                                  Map<String, dynamic> usuarioMap = jsonDecode(objCancha);
-
-                                  CanchasModel objCanchasModel = CanchasModel.fromJson(usuarioMap);
-
-                                  likeIt = !likeIt;
-                                  objCanchasModel.like = likeIt;
-                                  CanchasService().registraCanchasFavoritas(objCanchasModel);
-
+                                onTap: () {
                                   setState(() {
-                                    
+                                    likeIt = !likeIt;
                                   });
                                 },
                                 child: Icon(Icons.favorite, color: likeIt ? Colors.red : Colors.white)
